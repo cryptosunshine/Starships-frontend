@@ -8,12 +8,19 @@ const Home: FC = () => {
   const { wallets, wallet, select, connecting, connected, getAccounts, signAndExecuteTransaction } = useWallet();
   const provider = new JsonRpcProvider();
   const { state, dispatch } = useGlobal()
-  const [ activeTabs, setActiveTabs] = useState(1);
+  const [ activeTabs, setActiveTabs] = useState(0);
   const [ myNFTList, SetMyNFTList ] = useState([]);
   const [ activeNFT, SetActiveNFT ] = useState<any>();
   const [ activeMix, setActiveMix ] = useState<boolean>(false);
   const [ myNFTMixList, setMyNFTMixList ] = useState<any>([]);
-
+  const [nameModal, setNameModal] = useState<boolean>(false);
+  const [name, setName] = useState<string>();
+  
+  useEffect(() => {
+    document.addEventListener('click', () => {
+      setNameModal(false);
+    })
+  },[]);
   
   
   const contractAddress = "0x61d0b3199cfd0c54902a8321b31bc820a5839341";
@@ -28,11 +35,12 @@ const Home: FC = () => {
     let end = e.substring(e.length - 4, e.length);
     return first+'...'+end;
   }
-  const mint = async (name:string) => {
-    getAccounts().then((accounts: any) => {
-      console.log("Getting Accounts", accounts);
-    });
-
+  const mint = async () => {
+    console.log(name)
+    if(!name){
+      console.log(name)
+      return;
+    }
     const reasult = await signAndExecuteTransaction({
       kind: "moveCall",
       data: {
@@ -48,6 +56,7 @@ const Home: FC = () => {
       },
     });
     console.log(reasult)
+    setNameModal(false)
     getNFTList(state.address);
   }
   const mixture = async (id1:any, id2:any) => {
@@ -213,6 +222,15 @@ const Home: FC = () => {
                 return <Item item={e} />
               })
             }
+            <div className='card card-add flex justify-center align-center' 
+            style={{height: `200px`}}
+            onClick={(e) => {
+              e.stopPropagation()
+              setNameModal(true)
+            }}
+            >
+              Mint
+            </div>
           </div>
         }
         {
@@ -249,8 +267,32 @@ const Home: FC = () => {
             }
           </div>
         }
-      </div>
+        {
+        nameModal && 
+        <div className='modal' onClick={(e)=>{
+          e.stopPropagation()
+        }}>
+          <div className='flex' style={{height: `80px`,marginTop: `25px`}}>
+            <p>Name: </p>
+            <textarea 
+            className='input' 
+            placeholder='Please give it a famous name.' 
+            style={{width: `100%`, height: `50px`, marginLeft: `10px`, padding: `10px`}}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}/>
+          </div>
+          <div className='flex justify-center' style={{marginTop: `45px`}}>
+            <div className='btn' style={{width: `100%`}} onClick={(e) => {
+              e.stopPropagation()
+              mint()
+            }}>Mint</div>
+          </div>
+        </div>
 
+      }
+      </div>
+      
     </div>
 
   );
