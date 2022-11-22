@@ -1,0 +1,66 @@
+{
+  "name": "Starships",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/css": "^11.10.5",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.13",
+    "@mysten/sui.js": "^0.15.0",
+    "@mysten/wallet-adapter-all-wallets": "^0.3.0",
+    "@mysten/wallet-adapter-base": "^0.3.1",
+    "@mysten/wallet-adapter-react": "^6.0.0",
+    "@mysten/wallet-adapter-react-ui": "^0.2.3",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/howler": "2.2",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@types/styled-components": "^5.1.25",
+    "archiver": "^5.3.1",
+    "axios": "^0.27.2",
+    "howler": "2.2",
+    "polished": "4",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "5.0.1",
+    "styled-components": "^5.3.5",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start --host",
+    "build": "react-scripts build && node scripts/zip.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "/",
+  "devDependencies": {
+    "http-proxy-middleware": "^2.0.6"
+  }
+}
