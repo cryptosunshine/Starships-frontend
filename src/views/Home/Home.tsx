@@ -83,7 +83,10 @@ const Home: FC = () => {
           dialogue >= 1 && <FirstSpeech />
         }
         {
-          dialogue === 0 && <div className='btn' style={{width: `100%`}} onClick={() => setDialogue(1)}>Join in</div>
+          dialogue === 0 && 
+          <div className='flex justify-center'>
+            <div className='btn' style={{width: `200px`, marginTop: `200px`}} onClick={() => setDialogue(1)}>Join in</div>
+          </div>
         }
         
       </div>
