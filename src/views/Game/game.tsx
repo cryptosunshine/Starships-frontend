@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { useWallet } from "@mysten/wallet-adapter-react";
 import { Ed25519Keypair, JsonRpcProvider, RawSigner, Secp256k1Keypair } from '@mysten/sui.js';
 import { useGlobal } from '../../state/provider'
+import { contractAddress, globalMetaData } from '../../config/index'
 
 // The Best Of Me
 const Home: FC = () => {
@@ -23,8 +24,6 @@ const Home: FC = () => {
   },[]);
   
   
-  const contractAddress = "0x61d0b3199cfd0c54902a8321b31bc820a5839341";
-  const globalMetaData = "0x106269a44678f1410df45479a160a21e558cf712";
   useEffect(() => {
     getNFTList(state.address)
   }, [state.address])
