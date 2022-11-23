@@ -53,18 +53,22 @@ code {
 
 .header-logo{
   margin-left: 30px;
+  width: 200px;
+  z-index: 10;
+  font-size: 20px;
 }
 
 .header-wallet {
-  width: 100%;
+  width: 500px;
   color: rgb(0, 248, 248);
   display: block;
   padding: 10px 0 10px;
   font-size: 14px;
-  text-align: center;
+  text-align: right;
   line-height: 1;
   text-shadow: 0 0 5px #27e1fa;
   white-space: nowrap;
+  z-index: 10;
 }
 
 .btn {
@@ -97,7 +101,7 @@ code {
 }
 
 .view-bg {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height:100%;
   background-position: 50%;
@@ -117,7 +121,8 @@ code {
   bottom: 0;
 
   width: 100%;
-  height: 1000px;
+  height: fit-content;
+  min-height: 500px;
   z-index: 1;
   outline: 2px solid #000000;
   position: absolute;

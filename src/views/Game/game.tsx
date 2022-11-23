@@ -3,7 +3,7 @@ import { useWallet } from "@mysten/wallet-adapter-react";
 import { Ed25519Keypair, JsonRpcProvider, RawSigner, Secp256k1Keypair } from '@mysten/sui.js';
 import { useGlobal } from '../../state/provider'
 import { contractAddress, globalMetaData } from '../../config/index'
-
+import { reduceAddress } from '../../utils/index'
 // The Best Of Me
 const Home: FC = () => {
   const { wallets, wallet, select, connecting, connected, getAccounts, signAndExecuteTransaction } = useWallet();
@@ -28,12 +28,7 @@ const Home: FC = () => {
     getNFTList(state.address)
   }, [state.address])
 
-  const hiddenAddr = (e:any) => {
-    if(!e) return '...';
-    let first = e.substring(0,6);
-    let end = e.substring(e.length - 4, e.length);
-    return first+'...'+end;
-  }
+  
   const mint = async () => {
     console.log(name)
     if(!name){
@@ -168,9 +163,9 @@ const Home: FC = () => {
     return <div className={'card '+((activeNFT && activeNFT.id.id == item.id.id) && 'card-active')} onClick={() => {
       SetActiveNFT(item);
     }}>
-      <img src={item.url} alt="" />
+      <img src={item.url} style={{height: `200px`}} />
       <div className='card-id'>
-        <span>ID: </span> <a href={"https://explorer.sui.io/objects/"+item.id.id} target="_block">{hiddenAddr(item.id.id)}</a> 
+        <span>ID: </span> <a href={"https://explorer.sui.io/objects/"+item.id.id} target="_block">{reduceAddress(item.id.id)}</a> 
       </div>
       <div>
         <span>Name:</span> {item.name}

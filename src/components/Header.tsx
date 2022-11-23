@@ -3,6 +3,7 @@ import { useWallet } from "@mysten/wallet-adapter-react";
 import { useGlobal } from '../state/provider'
 import styles from "styled-components";
 import { useNavigate } from 'react-router-dom';
+import { reduceAddress } from '../utils/index'
 
 const App: React.FC<any> = () => {
   const navigate = useNavigate()
@@ -47,15 +48,16 @@ const App: React.FC<any> = () => {
           <div className='header-logo'>
             Star ships
           </div>
-          <div>
-            {
+          <div className='header-menu'>
+
+          </div>
+          {
               state.address ? <div className='header-wallet'>
-                {state.address}
+                {reduceAddress(state.address)}
               </div>
                 :
-                <div className='btn' onClick={connect} style={{ marginTop: '20px' }}>Connect</div>
+                <div className='btn' onClick={connect}>Connect</div>
             }
-          </div>
         </div>
 
 
