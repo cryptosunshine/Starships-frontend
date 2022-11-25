@@ -1,2 +1,2 @@
-export const contractAddress = "0xf2dc72d6be0a1bad7d08b50b4bc04c44f96b331d"; // Immutable
-export const globalMetaData = "0xe6e5a3f57e710fe02d47858d494a4e3005345ba0"; // Shared
+export const contractAddress = "0xe2c53ebfbacae73c6aa5736f0b381250e628a599"; // Immutable
+export const globalMetaData = "0x53754354fd57a393588e78cf5117fc77bb2b5d30"; // Shared

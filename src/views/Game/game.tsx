@@ -96,24 +96,43 @@ const Home: FC = () => {
     console.log(reasult)
     getNFTList(state.address)
   }
-  const change = async () => {
+  const fighting = async () => {
 
+    const reasult:any = await signAndExecuteTransaction({
+      kind: "moveCall",
+      data: {
+        packageObjectId: contractAddress, // Immutable
+        module: 'startships',
+        function: 'newBattleground',
+        typeArguments: [],
+        arguments: [
+          globalMetaData, // Shared
+          '0x7bf04f23f070d20b8eb102fa5e2565a2ab66f514',
+        ],
+        gasBudget: 10000,
+      },
+    });
+    console.log(reasult.effects.created[0].reference.objectId)
+    getNFTList(state.address)
+  }
+
+  const joinInFighting = async () => {
+    
     const reasult = await signAndExecuteTransaction({
       kind: "moveCall",
       data: {
-        packageObjectId: '0x3e6cfe77b098264d5dc2661dea48a4242471999b', // Immutable
-        module: 'game2',
-        function: 'newSpeed',
+        packageObjectId: contractAddress, // Immutable
+        module: 'startships',
+        function: 'joinInBattleground',
         typeArguments: [],
         arguments: [
-          activeNFT.id.id, // Shared
-          '900',
+          "0x0c0ac082c5a338e6ffbf4726e0d9dde39f332ffd", // Shared
+          '0x7bf04f23f070d20b8eb102fa5e2565a2ab66f514',
         ],
         gasBudget: 10000,
       },
     });
     console.log(reasult)
-    getNFTList(state.address)
   }
   const getNFTList = async (address: string) => {
     console.log(address)
@@ -206,7 +225,7 @@ const Home: FC = () => {
           }}>Starships Squad</div>
           <div className={`tab ${activeTabs === 1 && 'tab-active'}`} onClick={() => setActiveTabs(1)}>Starships Mixture</div>
           <div className={`tab ${activeTabs === 2 && 'tab-active'}`} onClick={() => setActiveTabs(2)}>Start Escape</div>
-          {/* <div className='btn' onClick={change}>Bug</div> */}
+          <div className={`tab ${activeTabs === 3 && 'tab-active'}`} onClick={() => setActiveTabs(3)}>Encounter</div>
         </div>
         {
           activeTabs === 0 && 
@@ -256,7 +275,23 @@ const Home: FC = () => {
           <div className="content-list">
             {
               myNFTList && myNFTList.map((e: any) => {
-                return <Item item={e} />
+                if(e.milestone === 0) {
+                  return <Item item={e} />
+                }
+              })
+            }
+          </div>
+        }
+        {
+          activeTabs ===3 && 
+          <div className="content-list">
+            <div className='btn' onClick={() => fighting()}>Fighting</div>
+            <div className='btn' onClick={() => joinInFighting()}>Join in Fighting</div>
+            {
+              myNFTList && myNFTList.map((e: any) => {
+                if(e.milestone > 0) {
+                  return <Item item={e} />
+                }
               })
             }
           </div>
