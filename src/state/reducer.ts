@@ -1,19 +1,14 @@
-export const store = {
-    count: 0,
+import { Store } from './type'
+
+export const store:Store = {
     address: "",
     autoConnect: true,
     targetAddressList: [],
-    myAddressList: []
+    myNFTList: [],
+    metaData: undefined
 }
 const reducer = (state:any,action:any) => {
     const actionFunction:any = {
-        add: () => {
-            console.log(action.value)
-            return {
-                ...state,
-                 count: state.count+action.value
-            }
-        },
         setAddress: () => {
             return {
                 ...state,
@@ -32,10 +27,16 @@ const reducer = (state:any,action:any) => {
                 targetAddressList: action.value
             }
         },
-        setMyAddressList: () => {
+        setMyNFTList: () => {
             return {
                 ...state,
-                myAddressList: action.value
+                myNFTList: action.value
+            }
+        },
+        setMetaData: () => {
+            return {
+                ...state,
+                metaData: action.value
             }
         },
     }

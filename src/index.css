@@ -20,9 +20,25 @@ code {
     monospace;
 }
 
+
 @font-face{
   font-family: 'BTTF';
   src: url("./styles/BTTF.ttf");
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #7de2f0;
 }
 
 .ant-select-selection-item-content {

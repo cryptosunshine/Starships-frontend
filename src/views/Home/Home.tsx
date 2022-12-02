@@ -32,7 +32,7 @@ const Home: FC = () => {
       kind: "moveCall",
       data: {
         packageObjectId: contractAddress, // Immutable
-        module: 'startships',
+        module: 'starships',
         function: 'mint',
         typeArguments: [],
         arguments: [

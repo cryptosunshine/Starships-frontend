@@ -4,8 +4,9 @@ import { Ed25519Keypair, JsonRpcProvider, RawSigner, Secp256k1Keypair } from '@m
 import { useGlobal } from '../../state/provider'
 import { contractAddress, globalMetaData } from '../../config/index'
 import { reduceAddress } from '../../utils/index'
-// The Best Of Me
-const Home: FC = () => {
+import Encounter from "./encounter"
+
+const Game: FC = () => {
   const { wallets, wallet, select, connecting, connected, getAccounts, signAndExecuteTransaction } = useWallet();
   const provider = new JsonRpcProvider();
   const { state, dispatch } = useGlobal()
@@ -30,16 +31,14 @@ const Home: FC = () => {
 
   
   const mint = async () => {
-    console.log(name)
     if(!name){
-      console.log(name)
       return;
     }
     const reasult = await signAndExecuteTransaction({
       kind: "moveCall",
       data: {
         packageObjectId: contractAddress, // Immutable
-        module: 'startships',
+        module: 'starships',
         function: 'mint',
         typeArguments: [],
         arguments: [
@@ -59,7 +58,7 @@ const Home: FC = () => {
       kind: "moveCall",
       data: {
         packageObjectId: contractAddress, // Immutable
-        module: 'startships',
+        module: 'starships',
         function: 'mixture',
         typeArguments: [],
         arguments: [
@@ -83,7 +82,7 @@ const Home: FC = () => {
       kind: "moveCall",
       data: {
         packageObjectId: contractAddress, // Immutable
-        module: 'startships',
+        module: 'starships',
         function: 'escape',
         typeArguments: [],
         arguments: [
@@ -96,50 +95,16 @@ const Home: FC = () => {
     console.log(reasult)
     getNFTList(state.address)
   }
-  const fighting = async () => {
 
-    const reasult:any = await signAndExecuteTransaction({
-      kind: "moveCall",
-      data: {
-        packageObjectId: contractAddress, // Immutable
-        module: 'startships',
-        function: 'newBattleground',
-        typeArguments: [],
-        arguments: [
-          globalMetaData, // Shared
-          '0x7bf04f23f070d20b8eb102fa5e2565a2ab66f514',
-        ],
-        gasBudget: 10000,
-      },
-    });
-    console.log(reasult.effects.created[0].reference.objectId)
-    getNFTList(state.address)
-  }
+  
 
-  const joinInFighting = async () => {
-    
-    const reasult = await signAndExecuteTransaction({
-      kind: "moveCall",
-      data: {
-        packageObjectId: contractAddress, // Immutable
-        module: 'startships',
-        function: 'joinInBattleground',
-        typeArguments: [],
-        arguments: [
-          "0x0c0ac082c5a338e6ffbf4726e0d9dde39f332ffd", // Shared
-          '0x7bf04f23f070d20b8eb102fa5e2565a2ab66f514',
-        ],
-        gasBudget: 10000,
-      },
-    });
-    console.log(reasult)
-  }
+ 
+
   const getNFTList = async (address: string) => {
-    console.log(address)
+
     const object = await provider.getObjectsOwnedByAddress(address);
     let list: any = [];
     object.map(e => {
-      console.log(e)
       if (e.type.indexOf(contractAddress) > -1) {
         list.push(e.objectId);
       }
@@ -149,21 +114,17 @@ const Home: FC = () => {
       const res: any = await provider.getObject(e);
       NFTList.push(res.details.data.fields)
     }))
-    console.log(NFTList)
+    dispatch({ type: 'setMyNFTList', value: NFTList })
     SetMyNFTList(NFTList)
   }
   function addMix(item:any) {
-    console.log(item)
     let filter = myNFTMixList && myNFTMixList.length > 0 && myNFTMixList.filter((e:any) => e.id.id == item.id.id);
-    console.log(filter)
     if(filter && filter.length != 0) return;
     let mixArr:any = []
     if(myNFTMixList && myNFTMixList.length > 0) {
       mixArr.push(myNFTMixList[0]);
     } 
-    console.log(mixArr)
     mixArr.push(item);
-    console.log(mixArr)
     setMyNFTMixList(mixArr)
     setActiveTabs(1)
   }
@@ -184,7 +145,7 @@ const Home: FC = () => {
     }}>
       <img src={item.url} style={{height: `200px`}} />
       <div className='card-id'>
-        <span>ID: </span> <a href={"https://explorer.sui.io/objects/"+item.id.id} target="_block">{reduceAddress(item.id.id)}</a> 
+        <span>ID: </span> <a href={"https://explorer.sui.io/objects/"+item.id.id} target="_blank">{reduceAddress(item.id.id)}</a> 
       </div>
       <div>
         <span>Name:</span> {item.name}
@@ -285,46 +246,37 @@ const Home: FC = () => {
         {
           activeTabs ===3 && 
           <div className="content-list">
-            <div className='btn' onClick={() => fighting()}>Fighting</div>
-            <div className='btn' onClick={() => joinInFighting()}>Join in Fighting</div>
-            {
-              myNFTList && myNFTList.map((e: any) => {
-                if(e.milestone > 0) {
-                  return <Item item={e} />
-                }
-              })
-            }
+            
+            <Encounter />
           </div>
         }
-        {
-        nameModal && 
-        <div className='modal' onClick={(e)=>{
-          e.stopPropagation()
-        }}>
-          <div className='flex' style={{height: `80px`,marginTop: `25px`}}>
-            <p>Name: </p>
-            <textarea 
-            className='input' 
-            placeholder='Please give it a famous name.' 
-            style={{width: `100%`, height: `50px`, marginLeft: `10px`, padding: `10px`}}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}/>
+        { nameModal && 
+          <div className='modal' onClick={(e)=>{
+            e.stopPropagation()
+          }}>
+            <div className='flex' style={{height: `80px`,marginTop: `25px`}}>
+              <p>Name: </p>
+              <textarea 
+              className='input' 
+              placeholder='Please give it a famous name.' 
+              style={{width: `100%`, height: `50px`, marginLeft: `10px`, padding: `10px`}}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}/>
+            </div>
+            <div className='flex justify-center' style={{marginTop: `45px`}}>
+              <div className='btn' style={{width: `100%`}} onClick={(e) => {
+                e.stopPropagation()
+                mint()
+              }}>Mint</div>
+            </div>
           </div>
-          <div className='flex justify-center' style={{marginTop: `45px`}}>
-            <div className='btn' style={{width: `100%`}} onClick={(e) => {
-              e.stopPropagation()
-              mint()
-            }}>Mint</div>
-          </div>
-        </div>
-
-      }
+        }
       </div>
       
     </div>
 
   );
 };
-export default Home
+export default Game
 
