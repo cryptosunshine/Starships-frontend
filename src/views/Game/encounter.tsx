@@ -5,6 +5,7 @@ import { useGlobal } from '../../state/provider'
 import { contractAddress, globalMetaData, x0 } from '../../config/index'
 import { reduceAddress } from '../../utils/index'
 import AssemblyNFT from '../../components/NFT/assemblyNFT'
+import { HexString } from "aptos";
 
 interface EncounterType {
     id: string,
@@ -200,7 +201,17 @@ const Encounter: FC = () => {
             </div>
         </div>
     }
-
+    const Publish = async () => {
+        const moduleData = "a11ceb0b060000000a01000c020c1e032a22044c0805545407a8019b0108c3023c06ff020e0a8d03050c9203280000010102020203020402050006020004070200020a0c010001020b0c010001050c0700010d070100000008000100010e01040100020f0607010203100901010804110a0b0003030d010108010302050308050c02080007080100020b020108000b03010800010804010b05010900010800070900020a020a020a020b05010804070801020b030109000b02010900010b02010800010900010608010105010b0301080002090005066d79636f696e066f7074696f6e04636f696e087472616e736665720a74785f636f6e746578740375726c064d59434f494e095478436f6e7465787404696e69740b64756d6d795f6669656c640c436f696e4d657461646174610b54726561737572794361700355726c064f7074696f6e046e6f6e650f6372656174655f63757272656e63790d667265657a655f6f626a6563740673656e6465720000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000020a0207064d59434f494e0a02010000020109010000000002120b00310607000701070138000a0138010c020c030b0238020b030b012e110438030200"
+        const data = new HexString(moduleData).toUint8Array()
+        // const reasult = await signAndExecuteTransaction({
+        //     kind: "publish",
+        //     data: {
+        //         compiledModules: data,
+        //         gasBudget: 10000,
+        //     },
+        // });
+    }
 
     return (
         <>
@@ -209,6 +220,9 @@ const Encounter: FC = () => {
                     e.stopPropagation();
                     setModal(true);
                 }}>Fighting</div>
+                <div className='btn' onClick={(e) => {
+                    Publish()
+                }}>Publish</div>
                 {/* <div className='btn' onClick={() => attack()}>Attack</div>
                 <div className='btn' onClick={() => quitBattleground()}>quit Battleground</div>
                 <div className='btn' onClick={() => burnBattleground()}>Burn Battleground</div> */}

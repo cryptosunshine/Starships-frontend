@@ -46,7 +46,7 @@ const App: React.FC<any> = () => {
         </div>
         <div className='header-content'>
           <div className='header-logo'>
-            Star ships
+            Star ship
           </div>
           <div className='header-menu'>
 

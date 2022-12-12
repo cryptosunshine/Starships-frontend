@@ -26,6 +26,7 @@ const Game: FC = () => {
   
   
   useEffect(() => {
+    console.log(state.address)
     getNFTList(state.address)
   }, [state.address])
 
@@ -48,7 +49,6 @@ const Game: FC = () => {
         gasBudget: 10000,
       },
     });
-    console.log(reasult)
     setNameModal(false)
     getNFTList(state.address);
   }
@@ -102,8 +102,9 @@ const Game: FC = () => {
 
   const getNFTList = async (address: string) => {
 
-    const object = await provider.getObjectsOwnedByAddress(address);
+    const object = await provider.getObjectsOwnedByAddress("0xe9e7cca1e0e50d1225d6b9c7b79cb07906fd5acc");
     let list: any = [];
+    console.log(object)
     object.map(e => {
       if (e.type.indexOf(contractAddress) > -1) {
         list.push(e.objectId);

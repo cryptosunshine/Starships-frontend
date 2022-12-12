@@ -11,7 +11,7 @@ import Game from '../../views/Game'
 
 
 import PageHeader from '../Header'
-
+import PageFooter from '../Footer'
 
 
 const Layouts = () => {
@@ -30,6 +30,7 @@ const Layouts = () => {
                 <Route path="/" element={<Home></Home>} />
                 <Route path="/game" element={<Game></Game>} />
             </Routes>
+            <PageFooter />
         </div>
 
 
