@@ -1,4 +1,6 @@
-
+html, body {
+  height: 100%;
+}
 
 #components-layout-demo-side .logo {
   height: 32px;
@@ -13,3 +15,4 @@
 .ant-layout-content{
   padding: 20px
 }
+

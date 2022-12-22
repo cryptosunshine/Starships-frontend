@@ -10,29 +10,41 @@ const Game: FC = () => {
   const { wallets, wallet, select, connecting, connected, getAccounts, signAndExecuteTransaction } = useWallet();
   const provider = new JsonRpcProvider();
   const { state, dispatch } = useGlobal()
-  const [ activeTabs, setActiveTabs] = useState(0);
-  const [ myNFTList, SetMyNFTList ] = useState([]);
-  const [ activeNFT, SetActiveNFT ] = useState<any>();
-  const [ activeMix, setActiveMix ] = useState<boolean>(false);
-  const [ myNFTMixList, setMyNFTMixList ] = useState<any>([]);
+  const [activeTabs, setActiveTabs] = useState(0);
+  const [myNFTList, SetMyNFTList] = useState([]);
+  const [activeNFT, SetActiveNFT] = useState<any>();
+  const [activeMix, setActiveMix] = useState<boolean>(false);
+  const [myNFTMixList, setMyNFTMixList] = useState<any>([]);
   const [nameModal, setNameModal] = useState<boolean>(false);
   const [name, setName] = useState<string>();
-  
+
   useEffect(() => {
     document.addEventListener('click', () => {
       setNameModal(false);
     })
-  },[]);
-  
-  
+  }, []);
+
+  useEffect(() => {
+    if(activeTabs === 2) {
+      document.getElementsByClassName('video')[0].setAttribute('style', 'height: 100%;position: absolute;display: block;')
+      document.getElementsByClassName('view-bg')[0].setAttribute('style', 'background-image: auto')
+      
+    }else{
+      document.getElementsByClassName('video')[0].setAttribute('style', 'height: 100%;position: absolute;display: none;')
+      
+      document.getElementsByClassName('view-bg')[0].setAttribute('style', 'background-image: url("/img/1.webp")')
+    }
+  }, [activeTabs]);
+
+
   useEffect(() => {
     console.log(state.address)
     getNFTList(state.address)
   }, [state.address])
 
-  
+
   const mint = async () => {
-    if(!name){
+    if (!name) {
       return;
     }
     const reasult = await signAndExecuteTransaction({
@@ -52,7 +64,7 @@ const Game: FC = () => {
     setNameModal(false)
     getNFTList(state.address);
   }
-  const mixture = async (id1:any, id2:any) => {
+  const mixture = async (id1: any, id2: any) => {
 
     const reasult = await signAndExecuteTransaction({
       kind: "moveCall",
@@ -76,7 +88,7 @@ const Game: FC = () => {
     setMyNFTMixList([]);
   }
 
-  const escape = async (id:any) => {
+  const escape = async (id: any) => {
 
     const reasult = await signAndExecuteTransaction({
       kind: "moveCall",
@@ -96,9 +108,9 @@ const Game: FC = () => {
     getNFTList(state.address)
   }
 
-  
 
- 
+
+
 
   const getNFTList = async (address: string) => {
 
@@ -118,35 +130,35 @@ const Game: FC = () => {
     dispatch({ type: 'setMyNFTList', value: NFTList })
     SetMyNFTList(NFTList)
   }
-  function addMix(item:any) {
-    let filter = myNFTMixList && myNFTMixList.length > 0 && myNFTMixList.filter((e:any) => e.id.id == item.id.id);
-    if(filter && filter.length != 0) return;
-    let mixArr:any = []
-    if(myNFTMixList && myNFTMixList.length > 0) {
+  function addMix(item: any) {
+    let filter = myNFTMixList && myNFTMixList.length > 0 && myNFTMixList.filter((e: any) => e.id.id == item.id.id);
+    if (filter && filter.length != 0) return;
+    let mixArr: any = []
+    if (myNFTMixList && myNFTMixList.length > 0) {
       mixArr.push(myNFTMixList[0]);
-    } 
+    }
     mixArr.push(item);
     setMyNFTMixList(mixArr)
     setActiveTabs(1)
   }
-  function removeMix(item:any) {
-    let mixArr:any = JSON.parse(JSON.stringify(myNFTMixList));
-    myNFTMixList.map((e:any,i:number) => {
-      if(e.id.id === item.id.id){
+  function removeMix(item: any) {
+    let mixArr: any = JSON.parse(JSON.stringify(myNFTMixList));
+    myNFTMixList.map((e: any, i: number) => {
+      if (e.id.id === item.id.id) {
         mixArr.splice(i, 1);
       }
     })
 
     setMyNFTMixList(mixArr)
   }
-  const Item = (e:any) => {
+  const Item = (e: any) => {
     let item = e.item;
-    return <div className={'card '+((activeNFT && activeNFT.id.id == item.id.id) && 'card-active')} onClick={() => {
+    return <div className={'card ' + ((activeNFT && activeNFT.id.id == item.id.id) && 'card-active')} onClick={() => {
       SetActiveNFT(item);
     }}>
-      <img src={item.url} style={{height: `200px`}} />
+      <img src={item.url} style={{ height: `200px` }} />
       <div className='card-id'>
-        <span>ID: </span> <a href={"https://explorer.sui.io/objects/"+item.id.id} target="_blank">{reduceAddress(item.id.id)}</a> 
+        <span>ID: </span> <a href={"https://explorer.sui.io/objects/" + item.id.id} target="_blank">{reduceAddress(item.id.id)}</a>
       </div>
       <div>
         <span>Name:</span> {item.name}
@@ -161,18 +173,18 @@ const Game: FC = () => {
         <span>Milestone:</span> {item.milestone}
       </div>
       {
-        activeMix && activeTabs === 0 &&  <div className='btn' onClick={() => addMix(item)}>
-            Add to mix...
+        activeMix && activeTabs === 0 && <div className='btn' onClick={() => addMix(item)}>
+          Add to mix...
         </div>
       }
       {
-        activeTabs === 1 &&  <div className='btn' onClick={() => removeMix(item)}>
-            Remove to mix...
+        activeTabs === 1 && <div className='btn' onClick={() => removeMix(item)}>
+          Remove to mix...
         </div>
       }
       {
-        activeTabs === 2 &&  <div className='btn' onClick={() => escape(item.id.id)}>
-            Run
+        activeTabs === 2 && <div className='btn' onClick={() => escape(item.id.id)}>
+          Run
         </div>
       }
     </div>
@@ -190,54 +202,54 @@ const Game: FC = () => {
           <div className={`tab ${activeTabs === 3 && 'tab-active'}`} onClick={() => setActiveTabs(3)}>Encounter</div>
         </div>
         {
-          activeTabs === 0 && 
+          activeTabs === 0 &&
           <div className="content-list">
             {
               myNFTList && myNFTList.map((e: any) => {
                 return <Item item={e} />
               })
             }
-            <div className='card card-add flex justify-center align-center' 
-            style={{height: `200px`}}
-            onClick={(e) => {
-              e.stopPropagation()
-              setNameModal(true)
-            }}
+            <div className='card card-add flex justify-center align-center'
+              style={{ height: `200px` }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setNameModal(true)
+              }}
             >
               Mint
             </div>
           </div>
         }
         {
-          activeTabs === 1 && 
+          activeTabs === 1 &&
           <div className="content-list">
             {
               myNFTMixList && myNFTMixList.map((e: any) => {
                 return <Item item={e} />
               })
             }
-            <div className='card card-add flex justify-center align-center' 
-            style={{height: `200px`}}
-            onClick={() => {
-              if(myNFTMixList.length == 2) {
-                mixture(myNFTMixList[0].id.id, myNFTMixList[1].id.id)
-                return;
-              }
-              setActiveTabs(0);
-              setActiveMix(true);
-            }}
+            <div className='card card-add flex justify-center align-center'
+              style={{ height: `200px` }}
+              onClick={() => {
+                if (myNFTMixList.length == 2) {
+                  mixture(myNFTMixList[0].id.id, myNFTMixList[1].id.id)
+                  return;
+                }
+                setActiveTabs(0);
+                setActiveMix(true);
+              }}
             >
               {myNFTMixList && myNFTMixList.length == 2 ? 'Mixture' : 'Add Star Ships'}
-              
+
             </div>
           </div>
         }
         {
-          activeTabs === 2 && 
+          activeTabs === 2 &&
           <div className="content-list">
             {
               myNFTList && myNFTList.map((e: any) => {
-                if(e.milestone === 0) {
+                if (e.milestone === 0) {
                   return <Item item={e} />
                 }
               })
@@ -245,28 +257,28 @@ const Game: FC = () => {
           </div>
         }
         {
-          activeTabs ===3 && 
+          activeTabs === 3 &&
           <div className="content-list">
-            
+
             <Encounter />
           </div>
         }
-        { nameModal && 
-          <div className='modal' onClick={(e)=>{
+        {nameModal &&
+          <div className='modal' onClick={(e) => {
             e.stopPropagation()
           }}>
-            <div className='flex' style={{height: `80px`,marginTop: `25px`}}>
+            <div className='flex' style={{ height: `80px`, marginTop: `25px` }}>
               <p>Name: </p>
-              <textarea 
-              className='input' 
-              placeholder='Please give it a famous name.' 
-              style={{width: `100%`, height: `50px`, marginLeft: `10px`, padding: `10px`}}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}/>
+              <textarea
+                className='input'
+                placeholder='Please give it a famous name.'
+                style={{ width: `100%`, height: `50px`, marginLeft: `10px`, padding: `10px` }}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }} />
             </div>
-            <div className='flex justify-center' style={{marginTop: `45px`}}>
-              <div className='btn' style={{width: `100%`}} onClick={(e) => {
+            <div className='flex justify-center' style={{ marginTop: `45px` }}>
+              <div className='btn' style={{ width: `100%` }} onClick={(e) => {
                 e.stopPropagation()
                 mint()
               }}>Mint</div>
@@ -274,7 +286,7 @@ const Game: FC = () => {
           </div>
         }
       </div>
-      
+
     </div>
 
   );
