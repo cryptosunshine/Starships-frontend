@@ -249,7 +249,7 @@ const Game: FC = () => {
           <div className="content-list">
             {
               myNFTList && myNFTList.map((e: any) => {
-                if (e.milestone === 0) {
+                if (e.milestone == 0) {
                   return <Item item={e} />
                 }
               })
