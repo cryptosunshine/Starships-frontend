@@ -114,7 +114,7 @@ const Game: FC = () => {
 
   const getNFTList = async (address: string) => {
 
-    const object = await provider.getObjectsOwnedByAddress("0xe9e7cca1e0e50d1225d6b9c7b79cb07906fd5acc");
+    const object = await provider.getObjectsOwnedByAddress(state.address);
     let list: any = [];
     console.log(object)
     object.map(e => {
